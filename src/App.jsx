@@ -40,6 +40,11 @@ function App() {
     passwordGenerator();
   }, [length, numberAllowed, charAllowed, passwordGenerator]);
 
+  const handleManualLengthChange = (e) => {
+    const value = e.target.value === "" ? "" : Math.max(6, Math.min(100, e.target.value));
+    setLength(value);
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 px-4 sm:px-6 lg:px-8">
       <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-600 opacity-50 animate-pulse"></div>
@@ -102,12 +107,12 @@ function App() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <motion.div
-            className="flex items-center justify-between"
+            className="flex flex-col sm:flex-row items-center justify-between"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <label className="flex items-center space-x-2">
+            <label className="flex flex-row space-x-1 sm:flex-row items-center space-y-2 sm:space-x-2 sm:space-y-0 w-full">
               <span className="text-md sm:text-lg flex-shrink-0">
                 Length: <span className="font-bold">{length}</span>
               </span>
@@ -115,9 +120,17 @@ function App() {
                 type="range"
                 min={6}
                 max={100}
-                value={length}
+                value={length || 6} // Default to 6 when length is empty
                 className="cursor-pointer w-full accent-blue-500"
                 onChange={(e) => setLength(e.target.value)}
+              />
+              <input
+                type="number"
+                min={6}
+                max={100}
+                value={length}
+                onChange={handleManualLengthChange}
+                className="w-16 px-2 py-1 text-black bg-white rounded-lg"
               />
             </label>
           </motion.div>
